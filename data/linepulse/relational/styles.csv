@@ -1,0 +1,37 @@
+﻿style_id,factory_id,style_code,product_type,fabric_type,complexity_band,sam_minutes,base_defect_rate,dataset_provenance
+STY-001,FAC-001,LP-2025001,Basic T-Shirt,knit,low,8.8,0.0202,synthetic
+STY-002,FAC-001,LP-2025002,Graphic T-Shirt,knit,low,9.4,0.0121,synthetic
+STY-003,FAC-001,LP-2025003,Polo Shirt,knit,medium,13.9,0.0324,synthetic
+STY-004,FAC-001,LP-2025004,Sweatshirt,knit,medium,17.8,0.0304,synthetic
+STY-005,FAC-001,LP-2025005,Hoodie,knit,high,25.0,0.0304,synthetic
+STY-006,FAC-001,LP-2025006,Leggings,knit,medium,13.8,0.0213,synthetic
+STY-007,FAC-001,LP-2025007,Jogger,knit,medium,17.9,0.0228,synthetic
+STY-008,FAC-001,LP-2025008,Kids T-Shirt,knit,low,8.1,0.0246,synthetic
+STY-009,FAC-001,LP-2025009,Dress Shirt,woven,high,28.8,0.036,synthetic
+STY-010,FAC-001,LP-2025010,Casual Shirt,woven,medium,24.7,0.0269,synthetic
+STY-011,FAC-001,LP-2025011,Blouse,woven,high,26.3,0.0397,synthetic
+STY-012,FAC-001,LP-2025012,Trouser,woven,high,31.0,0.0355,synthetic
+STY-013,FAC-001,LP-2025013,Chino,woven,high,27.4,0.0311,synthetic
+STY-014,FAC-001,LP-2025014,Light Jacket,woven,high,41.6,0.0483,synthetic
+STY-015,FAC-001,LP-2025015,School Uniform Shirt,woven,medium,18.7,0.0363,synthetic
+STY-016,FAC-001,LP-2025016,Shorts,woven,medium,17.7,0.0398,synthetic
+STY-017,FAC-001,LP-2025017,Basic T-Shirt,knit,low,7.8,0.0163,synthetic
+STY-018,FAC-001,LP-2025018,Graphic T-Shirt,knit,low,10.2,0.0206,synthetic
+STY-019,FAC-001,LP-2025019,Polo Shirt,knit,medium,16.5,0.0275,synthetic
+STY-020,FAC-001,LP-2025020,Sweatshirt,knit,medium,20.3,0.0234,synthetic
+STY-021,FAC-001,LP-2025021,Hoodie,knit,high,24.0,0.0474,synthetic
+STY-022,FAC-001,LP-2025022,Leggings,knit,medium,13.3,0.0275,synthetic
+STY-023,FAC-001,LP-2025023,Jogger,knit,medium,17.7,0.0395,synthetic
+STY-024,FAC-001,LP-2025024,Kids T-Shirt,knit,low,7.6,0.0226,synthetic
+STY-025,FAC-001,LP-2025025,Dress Shirt,woven,high,26.4,0.0391,synthetic
+STY-026,FAC-001,LP-2025026,Casual Shirt,woven,medium,22.1,0.0295,synthetic
+STY-027,FAC-001,LP-2025027,Blouse,woven,high,27.7,0.0481,synthetic
+STY-028,FAC-001,LP-2025028,Trouser,woven,high,32.6,0.0527,synthetic
+STY-029,FAC-001,LP-2025029,Chino,woven,high,27.5,0.0454,synthetic
+STY-030,FAC-001,LP-2025030,Light Jacket,woven,high,37.0,0.0356,synthetic
+STY-031,FAC-001,LP-2025031,School Uniform Shirt,woven,medium,22.0,0.036,synthetic
+STY-032,FAC-001,LP-2025032,Shorts,woven,medium,18.7,0.026,synthetic
+STY-033,FAC-001,LP-2025033,Basic T-Shirt,knit,low,8.0,0.0211,synthetic
+STY-034,FAC-001,LP-2025034,Graphic T-Shirt,knit,low,10.1,0.0163,synthetic
+STY-035,FAC-001,LP-2025035,Polo Shirt,knit,medium,14.5,0.0249,synthetic
+STY-036,FAC-001,LP-2025036,Sweatshirt,knit,medium,19.7,0.0292,synthetic

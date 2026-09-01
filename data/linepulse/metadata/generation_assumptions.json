@@ -1,0 +1,29 @@
+{
+  "provenance": "100% synthetic; contains no real factory, buyer, employee, or order records",
+  "random_seed": 20260901,
+  "simulation_period": [
+    "2025-01-04",
+    "2025-06-30"
+  ],
+  "factory_count": 1,
+  "line_count": 8,
+  "weekly_closure": "Friday",
+  "regular_shift_hours_utc": [
+    "08:00",
+    "17:59"
+  ],
+  "snapshot_time_utc": "13:00",
+  "split_policy": {
+    "train": "through 2025-04-30",
+    "validation": "2025-05-01 through 2025-05-31",
+    "test": "2025-06-01 onward"
+  },
+  "daily_miss_label": "daily_actual_output < daily_target",
+  "order_delay_label": "actual_completion_date > committed_due_date",
+  "privacy": "No individual employee identifiers are generated.",
+  "limitations": [
+    "Synthetic correlations are intentionally plausible but do not prove real factory behavior.",
+    "Observed action outcomes are associations and cannot support causal claims.",
+    "Replace synthetic SOPs and data ranges with approved real sources before a pilot."
+  ]
+}

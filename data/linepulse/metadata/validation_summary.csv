@@ -1,0 +1,31 @@
+﻿check,passed,detail
+unique_pk:factories,True,1 unique keys for 1 rows
+unique_pk:production_lines,True,8 unique keys for 8 rows
+unique_pk:styles,True,36 unique keys for 36 rows
+unique_pk:production_orders,True,144 unique keys for 144 rows
+unique_pk:line_allocations,True,144 unique keys for 144 rows
+unique_pk:hourly_production,True,11893 unique keys for 11893 rows
+unique_pk:attendance_summaries,True,1224 unique keys for 1224 rows
+unique_pk:machine_downtime,True,464 unique keys for 464 rows
+unique_pk:quality_defects,True,6394 unique keys for 6394 rows
+unique_pk:material_status,True,1224 unique keys for 1224 rows
+unique_pk:supervisor_notes,True,1224 unique keys for 1224 rows
+unique_pk:corrective_actions,True,441 unique keys for 441 rows
+unique_pk:action_outcomes,True,394 unique keys for 394 rows
+unique_pk:daily_line_ml,True,1224 unique keys for 1224 rows
+unique_pk:order_outcomes,True,137 unique keys for 137 rows
+unique_pk:split_assignments,True,153 unique keys for 153 rows
+unique_pk:documents,True,8 unique keys for 8 rows
+unique_pk:document_sections,True,16 unique keys for 16 rows
+unique_pk:rag_gold_questions,True,60 unique keys for 60 rows
+unique_pk:agent_eval_cases,True,48 unique keys for 48 rows
+unique_pk:security_eval_cases,True,40 unique keys for 40 rows
+fk:hourly_to_allocations,True,Every hourly row references a known allocation.
+fk:actions_to_notes,True,Every corrective action references a known supervisor note.
+nonnegative_output,True,All actual-output values are non-negative.
+time_splits,True,"{'train': 808, 'validation': 208, 'test': 208}"
+note_languages,True,"{'bn': 567, 'en': 345, 'mixed': 312}"
+label_distribution:daily_miss,True,daily miss rate=0.721
+label_distribution:order_delay,True,order delay rate=0.599
+rag_answerable_mix,True,"{True: 48, False: 12}"
+security_case_count,True,40 security cases

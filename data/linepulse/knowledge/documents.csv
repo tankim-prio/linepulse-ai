@@ -1,0 +1,9 @@
+﻿document_id,title,document_type,version,effective_from,effective_to,language,filename,status,dataset_provenance
+DOC-001,Hourly Production Reporting SOP,production_sop,1.0,2025-01-01,,bilingual_en_bn,DOC-001_hourly_production_reporting_sop.md,active,synthetic
+DOC-002,Machine Downtime Response Procedure,maintenance_sop,1.0,2025-01-01,,bilingual_en_bn,DOC-002_machine_downtime_response_procedure.md,active,synthetic
+DOC-003,Material Shortage Escalation SOP,material_sop,1.0,2025-01-01,,bilingual_en_bn,DOC-003_material_shortage_escalation_sop.md,active,synthetic
+DOC-004,Quality Defect Containment and CAPA,quality_sop,1.0,2025-01-01,,bilingual_en_bn,DOC-004_quality_defect_containment_and_capa.md,active,synthetic
+DOC-005,Line Balancing and Style Changeover Guide,industrial_engineering_sop,1.0,2025-01-01,,bilingual_en_bn,DOC-005_line_balancing_and_style_changeover_guide.md,active,synthetic
+DOC-006,Attendance and Operator Reallocation Policy,workforce_policy,1.0,2025-01-01,,bilingual_en_bn,DOC-006_attendance_and_operator_reallocation_policy.md,active,synthetic
+DOC-007,Corrective Action Approval Policy,approval_policy,1.0,2025-01-01,,bilingual_en_bn,DOC-007_corrective_action_approval_policy.md,active,synthetic
+DOC-008,AI Decision Support Safety Policy,ai_policy,1.0,2025-01-01,,bilingual_en_bn,DOC-008_ai_decision_support_safety_policy.md,active,synthetic

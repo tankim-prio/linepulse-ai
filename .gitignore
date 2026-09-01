@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+.env
+reports/*.json
+models/*.joblib
+models/*.pkl
+*.duckdb
+*.db
+build/
+dist/
+*.egg-info/
+.idea/
+.vscode/

@@ -1,0 +1,9 @@
+﻿line_id,factory_id,line_name,specialization,standard_operator_capacity,planning_efficiency,active,dataset_provenance
+LINE-01,FAC-001,Knit Line 1,knit,48,0.71,True,synthetic
+LINE-02,FAC-001,Knit Line 2,knit,52,0.73,True,synthetic
+LINE-03,FAC-001,Polo Line,knit,50,0.7,True,synthetic
+LINE-04,FAC-001,Shirt Line 1,woven,54,0.68,True,synthetic
+LINE-05,FAC-001,Shirt Line 2,woven,50,0.69,True,synthetic
+LINE-06,FAC-001,Bottom Line,woven,46,0.67,True,synthetic
+LINE-07,FAC-001,Outerwear Line,woven,56,0.65,True,synthetic
+LINE-08,FAC-001,Flexible Sample Line,mixed,38,0.64,True,synthetic

@@ -1,0 +1,171 @@
+{
+  "dataset_name": "LinePulse Synthetic Dataset Package",
+  "generated_at": "2026-09-01T04:05:05.119658+00:00",
+  "seed": 20260901,
+  "all_checks_passed": true,
+  "checks": [
+    {
+      "check": "unique_pk:factories",
+      "passed": true,
+      "detail": "1 unique keys for 1 rows"
+    },
+    {
+      "check": "unique_pk:production_lines",
+      "passed": true,
+      "detail": "8 unique keys for 8 rows"
+    },
+    {
+      "check": "unique_pk:styles",
+      "passed": true,
+      "detail": "36 unique keys for 36 rows"
+    },
+    {
+      "check": "unique_pk:production_orders",
+      "passed": true,
+      "detail": "144 unique keys for 144 rows"
+    },
+    {
+      "check": "unique_pk:line_allocations",
+      "passed": true,
+      "detail": "144 unique keys for 144 rows"
+    },
+    {
+      "check": "unique_pk:hourly_production",
+      "passed": true,
+      "detail": "11893 unique keys for 11893 rows"
+    },
+    {
+      "check": "unique_pk:attendance_summaries",
+      "passed": true,
+      "detail": "1224 unique keys for 1224 rows"
+    },
+    {
+      "check": "unique_pk:machine_downtime",
+      "passed": true,
+      "detail": "464 unique keys for 464 rows"
+    },
+    {
+      "check": "unique_pk:quality_defects",
+      "passed": true,
+      "detail": "6394 unique keys for 6394 rows"
+    },
+    {
+      "check": "unique_pk:material_status",
+      "passed": true,
+      "detail": "1224 unique keys for 1224 rows"
+    },
+    {
+      "check": "unique_pk:supervisor_notes",
+      "passed": true,
+      "detail": "1224 unique keys for 1224 rows"
+    },
+    {
+      "check": "unique_pk:corrective_actions",
+      "passed": true,
+      "detail": "441 unique keys for 441 rows"
+    },
+    {
+      "check": "unique_pk:action_outcomes",
+      "passed": true,
+      "detail": "394 unique keys for 394 rows"
+    },
+    {
+      "check": "unique_pk:daily_line_ml",
+      "passed": true,
+      "detail": "1224 unique keys for 1224 rows"
+    },
+    {
+      "check": "unique_pk:order_outcomes",
+      "passed": true,
+      "detail": "137 unique keys for 137 rows"
+    },
+    {
+      "check": "unique_pk:split_assignments",
+      "passed": true,
+      "detail": "153 unique keys for 153 rows"
+    },
+    {
+      "check": "unique_pk:documents",
+      "passed": true,
+      "detail": "8 unique keys for 8 rows"
+    },
+    {
+      "check": "unique_pk:document_sections",
+      "passed": true,
+      "detail": "16 unique keys for 16 rows"
+    },
+    {
+      "check": "unique_pk:rag_gold_questions",
+      "passed": true,
+      "detail": "60 unique keys for 60 rows"
+    },
+    {
+      "check": "unique_pk:agent_eval_cases",
+      "passed": true,
+      "detail": "48 unique keys for 48 rows"
+    },
+    {
+      "check": "unique_pk:security_eval_cases",
+      "passed": true,
+      "detail": "40 unique keys for 40 rows"
+    },
+    {
+      "check": "fk:hourly_to_allocations",
+      "passed": true,
+      "detail": "Every hourly row references a known allocation."
+    },
+    {
+      "check": "fk:actions_to_notes",
+      "passed": true,
+      "detail": "Every corrective action references a known supervisor note."
+    },
+    {
+      "check": "nonnegative_output",
+      "passed": true,
+      "detail": "All actual-output values are non-negative."
+    },
+    {
+      "check": "time_splits",
+      "passed": true,
+      "detail": "{'train': 808, 'validation': 208, 'test': 208}"
+    },
+    {
+      "check": "note_languages",
+      "passed": true,
+      "detail": "{'bn': 567, 'en': 345, 'mixed': 312}"
+    },
+    {
+      "check": "label_distribution:daily_miss",
+      "passed": true,
+      "detail": "daily miss rate=0.721"
+    },
+    {
+      "check": "label_distribution:order_delay",
+      "passed": true,
+      "detail": "order delay rate=0.599"
+    },
+    {
+      "check": "rag_answerable_mix",
+      "passed": true,
+      "detail": "{True: 48, False: 12}"
+    },
+    {
+      "check": "security_case_count",
+      "passed": true,
+      "detail": "40 security cases"
+    }
+  ],
+  "summary": {
+    "date_start": "2025-01-04",
+    "date_end": "2025-06-30",
+    "hourly_rows": 11893,
+    "ml_snapshots": 1224,
+    "daily_target_miss_rate": 0.7214,
+    "completed_orders": 137,
+    "order_delay_rate": 0.5985,
+    "notes": 1224,
+    "rag_eval_cases": 60,
+    "agent_eval_cases": 48,
+    "security_eval_cases": 40
+  }
+}

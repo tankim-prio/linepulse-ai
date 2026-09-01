@@ -1,0 +1,22 @@
+﻿dataset_name,relative_path,row_count,column_count,primary_key,foreign_keys,purpose,dataset_provenance
+factories,relational/factories.csv,1,6,factory_id,,Factory master data and timezone boundary.,synthetic
+production_lines,relational/production_lines.csv,8,8,line_id,factory_id -> factories.factory_id,Production line capacity and specialization.,synthetic
+styles,relational/styles.csv,36,9,style_id,factory_id -> factories.factory_id,"Style complexity, product type, SAM, and baseline quality attributes.",synthetic
+production_orders,relational/production_orders.csv,144,14,order_id,factory_id -> factories.factory_id; style_id -> styles.style_id,"Order schedule, quantity, completion, and delay outcome.",synthetic
+line_allocations,relational/line_allocations.csv,144,11,allocation_id,order_id -> production_orders.order_id; line_id -> production_lines.line_id,Order-to-line allocation and hourly target.,synthetic
+hourly_production,relational/hourly_production.csv,11893,22,production_id,allocation_id -> line_allocations.allocation_id; line_id/order_id/style_id -> masters,Primary hourly operational fact table.,synthetic
+attendance_summaries,relational/attendance_summaries.csv,1224,10,attendance_id,line_id -> production_lines.line_id,Daily line-level attendance signals without employee identities.,synthetic
+machine_downtime,relational/machine_downtime.csv,464,12,downtime_id,line_id -> production_lines.line_id; order_id -> production_orders.order_id,Machine event and downtime history.,synthetic
+quality_defects,relational/quality_defects.csv,6394,12,quality_defect_id,line_id/order_id/style_id -> masters,Daily defect-type counts and severity.,synthetic
+material_status,relational/material_status.csv,1224,11,material_status_id,order_id -> production_orders.order_id,Daily order material availability snapshot.,synthetic
+supervisor_notes,relational/supervisor_notes.csv,1224,14,note_id,line_id/order_id -> masters,"Labeled Bangla, English, and code-mixed NLP data.",synthetic
+corrective_actions,relational/corrective_actions.csv,441,18,action_id,note_id -> supervisor_notes.note_id; line_id/order_id -> masters,Human-reviewed action history for workflow and MCP tests.,synthetic
+action_outcomes,relational/action_outcomes.csv,394,13,outcome_id,action_id -> corrective_actions.action_id,Observed next-day outcomes; explicitly not causal evidence.,synthetic
+daily_line_ml,modeling/daily_line_ml.csv,1224,32,snapshot_id,line_id/order_id/style_id -> masters,Point-in-time 13:00 feature snapshots with end-of-day labels.,synthetic
+order_outcomes,modeling/order_outcomes.csv,137,16,order_id,order_id -> production_orders.order_id,Order-start features and final delay labels.,synthetic
+split_assignments,modeling/split_assignments.csv,153,4,work_date,,"Time-based train, validation, and test mapping.",synthetic
+documents,knowledge/documents.csv,8,10,document_id,,RAG document catalog.,synthetic
+document_sections,knowledge/document_sections.csv,16,6,section_id,document_id -> documents.document_id,Bilingual document sections for workbook inspection.,synthetic
+rag_gold_questions,evaluation/rag_gold_questions.csv,60,10,query_id,,Human-style retrieval and grounded-answer evaluation cases.,synthetic
+agent_eval_cases,evaluation/agent_eval_cases.csv,48,12,case_id,snapshot_id -> daily_line_ml.snapshot_id,Expected LangGraph state and tool outcomes.,synthetic
+security_eval_cases,evaluation/security_eval_cases.csv,40,9,security_case_id,,"Prompt-injection, authorization, replay, and tool-abuse tests.",synthetic
