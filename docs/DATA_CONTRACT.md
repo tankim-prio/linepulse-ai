@@ -1,4 +1,4 @@
-# Phase 1 data contract
+# LinePulse AI data contract
 
 ## Trust boundary
 

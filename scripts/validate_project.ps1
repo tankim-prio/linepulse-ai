@@ -13,5 +13,5 @@ Set-Location $ProjectRoot
 & $Python -m linepulse.cli --data-dir $DataDir --report $Report
 & $Python -m unittest discover -s tests -v
 
-Write-Host "Phase 1 validation and tests passed."
+Write-Host "Project validation and automated tests passed."
 

@@ -13,4 +13,4 @@ if (-not (Test-Path $Python)) {
 & $Python -m pip install --upgrade pip
 & $Python -m pip install -e $ProjectRoot
 
-Write-Host "LinePulse Phase 1 environment is ready."
+Write-Host "LinePulse development environment is ready."

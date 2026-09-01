@@ -1,0 +1,4 @@
+data_split,rows,target_miss_rate
+train,808,0.7277227722772277
+validation,208,0.7115384615384616
+test,208,0.7067307692307693

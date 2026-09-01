@@ -1,4 +1,4 @@
-"""Command-line entry point for LinePulse Phase 1 checks."""
+"""Command-line entry point for LinePulse data validation."""
 
 from __future__ import annotations
 
@@ -51,4 +51,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

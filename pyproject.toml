@@ -9,7 +9,10 @@ description = "CPU-friendly garment production risk, RAG, and agent platform"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
+  "joblib==1.5.3",
+  "matplotlib==3.10.8",
   "pandas==2.2.3",
+  "scikit-learn==1.8.0",
 ]
 
 [project.scripts]
@@ -17,4 +20,3 @@ linepulse-validate = "linepulse.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-

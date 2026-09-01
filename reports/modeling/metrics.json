@@ -1,0 +1,130 @@
+{
+  "generated_at": "2026-09-01T18:35:27.150561+00:00",
+  "dataset": "D:\\Project\\linePulse_AI\\linepulse-ai\\data\\linepulse\\modeling\\daily_line_ml.csv",
+  "target": "label_daily_target_missed",
+  "feature_count": 19,
+  "features": [
+    "day_in_order",
+    "complexity_band",
+    "sam_minutes",
+    "planned_workers",
+    "present_workers",
+    "attendance_rate",
+    "target_to_snapshot",
+    "output_to_snapshot",
+    "progress_ratio",
+    "downtime_to_snapshot",
+    "inspected_to_snapshot",
+    "defects_to_snapshot",
+    "defect_rate_to_snapshot",
+    "material_status",
+    "changeover_minutes",
+    "root_cause_signal",
+    "rolling_3d_efficiency",
+    "rolling_3d_downtime",
+    "previous_day_miss"
+  ],
+  "forbidden_feature_overlap": [],
+  "split_rows": {
+    "train": 808,
+    "validation": 208,
+    "test": 208
+  },
+  "validation": {
+    "dummy_prior": {
+      "rows": 208,
+      "positive_rate": 0.711538,
+      "threshold": 0.5,
+      "roc_auc": 0.5,
+      "pr_auc": 0.711538,
+      "accuracy": 0.711538,
+      "balanced_accuracy": 0.5,
+      "precision": 0.711538,
+      "recall": 1.0,
+      "f1": 0.831461,
+      "brier_score": 0.205513,
+      "confusion_matrix": [
+        [
+          0,
+          60
+        ],
+        [
+          0,
+          148
+        ]
+      ]
+    },
+    "logistic_regression": {
+      "rows": 208,
+      "positive_rate": 0.711538,
+      "threshold": 0.26,
+      "roc_auc": 0.939977,
+      "pr_auc": 0.977491,
+      "accuracy": 0.884615,
+      "balanced_accuracy": 0.84955,
+      "precision": 0.907895,
+      "recall": 0.932432,
+      "f1": 0.92,
+      "brier_score": 0.108317,
+      "confusion_matrix": [
+        [
+          46,
+          14
+        ],
+        [
+          10,
+          138
+        ]
+      ]
+    }
+  },
+  "test": {
+    "dummy_prior": {
+      "rows": 208,
+      "positive_rate": 0.706731,
+      "threshold": 0.5,
+      "roc_auc": 0.5,
+      "pr_auc": 0.706731,
+      "accuracy": 0.706731,
+      "balanced_accuracy": 0.5,
+      "precision": 0.706731,
+      "recall": 1.0,
+      "f1": 0.828169,
+      "brier_score": 0.207703,
+      "confusion_matrix": [
+        [
+          0,
+          61
+        ],
+        [
+          0,
+          147
+        ]
+      ]
+    },
+    "logistic_regression": {
+      "rows": 208,
+      "positive_rate": 0.706731,
+      "threshold": 0.26,
+      "roc_auc": 0.979034,
+      "pr_auc": 0.992117,
+      "accuracy": 0.923077,
+      "balanced_accuracy": 0.897625,
+      "precision": 0.933775,
+      "recall": 0.959184,
+      "f1": 0.946309,
+      "brier_score": 0.060864,
+      "confusion_matrix": [
+        [
+          51,
+          10
+        ],
+        [
+          6,
+          141
+        ]
+      ]
+    }
+  },
+  "synthetic_only": true
+}

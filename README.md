@@ -1,24 +1,23 @@
 # LinePulse AI
 
-LinePulse AI is a portfolio-grade, CPU-friendly system for garment production
-risk prediction, bilingual operational knowledge retrieval, and
-human-approved corrective-action workflows.
+LinePulse AI is a CPU-friendly portfolio project for garment production-risk
+prediction, bilingual operational knowledge retrieval, and human-approved
+corrective-action workflows.
 
-The included data is **100% synthetic**. It contains no real factory, buyer,
-employee, machine, or order records. Synthetic results must not be presented as
-real business impact.
+The bundled data is **100% synthetic**. It contains no real factory, buyer,
+employee, machine, or order information. Model results must never be presented
+as measured business impact.
 
-## Current milestone: Phase 1 complete
+## Implemented capabilities
 
-This starter repository contains:
-
-- 21 related CSV datasets and eight bilingual synthetic SOPs;
-- an executable data-contract validator;
-- primary-key, foreign-key, schema, business-rule, language, split, and
-  provenance checks;
-- standard-library automated tests;
-- Windows PowerShell setup and verification scripts;
-- the complete project roadmap and data contract.
+- 21 related operational, modeling, RAG, agent, and security datasets;
+- schema, key, relationship, chronology, provenance, and safety validation;
+- reproducible exploratory analysis with summary tables and charts;
+- a dummy benchmark and leakage-safe logistic-regression risk model;
+- chronological train, validation, and held-out test evaluation;
+- saved model metadata, predictions, metrics, and model card;
+- automated success and failure-injection tests;
+- Windows PowerShell commands for setup, validation, and execution.
 
 ## Hardware target
 
@@ -26,81 +25,99 @@ This starter repository contains:
 - Intel Core i3 8th generation or similar
 - 8 GB RAM
 - No GPU required
-- Python 3.10 or newer
+- Python 3.10 or newer; Python 3.11 is recommended
 
-## Quick start on Windows
+## Windows setup
 
-Open PowerShell in this repository and run:
+Open PowerShell in the repository root:
 
 ```powershell
 Set-ExecutionPolicy -Scope Process Bypass
 .\scripts\setup_windows.ps1
-.\scripts\check_phase1.ps1
+.\scripts\validate_project.ps1
 ```
 
-The scripts use `.venv\Scripts\python.exe` directly, so activating the virtual
+The scripts call `.venv\Scripts\python.exe` directly, so activating the virtual
 environment is optional.
 
-## Create the Git repository
-
-After the checks pass:
+## Run analytics and model training
 
 ```powershell
-git init
-git add .
-git commit -m "Complete LinePulse Phase 1 data foundation"
+.\scripts\run_analytics.ps1
 ```
 
-Then create an empty GitHub repository and follow GitHub's displayed commands
-to add the remote and push the `main` branch. Never commit `.env` or real
-factory data.
+This command performs the following in order:
 
-## Manual setup
+1. validates all declared datasets;
+2. generates the exploratory report and PNG charts;
+3. trains the dummy and logistic-regression baselines;
+4. selects the classification threshold using validation data;
+5. evaluates the selected model once on held-out test data; and
+6. runs the complete automated test suite.
+
+Generated outputs:
+
+```text
+reports/eda/                         EDA tables, JSON summary, and PNG charts
+reports/modeling/metrics.json        Validation and held-out test metrics
+reports/modeling/predictions.csv     Validation and test predictions
+reports/modeling/model_card.md       Intended use, metrics, and limitations
+models/daily_target_risk.joblib      Trained pipeline and decision threshold
+```
+
+## Manual commands
 
 ```powershell
 py -3 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install --upgrade pip
 .\.venv\Scripts\python.exe -m pip install -e .
 .\.venv\Scripts\python.exe -m linepulse.cli --data-dir data\linepulse
+.\.venv\Scripts\python.exe -m linepulse.analytics.eda
+.\.venv\Scripts\python.exe -m linepulse.modeling.train
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
 ```
-
-The selected Python version must be at least 3.10.
-
-## Validation command
-
-```powershell
-.\.venv\Scripts\linepulse-validate.exe `
-  --data-dir data\linepulse `
-  --report reports\data_validation_report.json
-```
-
-The command exits with code `0` only when every error-level check passes. This
-makes it suitable for local checks and future continuous integration.
 
 ## Repository structure
 
 ```text
 linepulse-ai/
-├── data/linepulse/        Synthetic CSV, JSON, Markdown, and Excel artifacts
-├── docs/                  Roadmap and data contract
-├── reports/               Generated validation reports
-├── scripts/               Windows setup and verification scripts
-├── src/linepulse/         Application package
-└── tests/                 Automated Phase 1 tests
+├── data/linepulse/            Synthetic datasets and bilingual SOPs
+├── docs/                      Contracts, validation evidence, and roadmap
+├── models/                    Generated trained-model artifacts
+├── reports/eda/               Generated analytical summaries and charts
+├── reports/modeling/          Generated evaluation and model-card artifacts
+├── scripts/                   Windows setup and execution commands
+├── src/linepulse/analytics/   Reproducible EDA implementation
+├── src/linepulse/data/        Data contracts and validation
+├── src/linepulse/modeling/    Leakage-safe training and evaluation
+└── tests/                     Automated tests
 ```
 
-## Important modeling boundary
+## Modeling controls
 
-For the daily target-risk model, features must contain only information
-available at `snapshot_at`. Never use `daily_actual_output`, final completion
-fields, or label columns as inputs. The next milestone will implement this
-leakage-safe feature pipeline and a CPU baseline model.
+- Unit of prediction: one production line on one work date.
+- Prediction time: synthetic 13:00 UTC snapshot.
+- Target: `label_daily_target_missed`.
+- Split strategy: chronological, never random.
+- Threshold selection: validation data only.
+- Held-out test data: evaluated after threshold selection.
+- Forbidden inputs: daily final output, outcome labels, and completion fields.
+- Intended role: decision support; no autonomous operational actions.
 
-## Next milestone
+## Git workflow
 
-Phase 2 will add exploratory analysis, a reproducible feature builder, a dummy
-baseline, and the first scikit-learn target-risk model using the existing
-time-based train, validation, and test splits.
+After completing and reviewing a coherent change:
 
-See `docs/PHASE1_RESULTS.md` for the checks actually executed on this package.
+```powershell
+git status
+git add .
+git commit -m "Add reproducible risk analytics and baseline model"
+git push
+```
+
+Never commit `.env`, credentials, personal data, real factory data, or trained
+artifacts derived from confidential information.
+
+See `docs/VALIDATION_RESULTS.md` for verified implementation results and
+`docs/ROADMAP.md` for planned capabilities.
+
