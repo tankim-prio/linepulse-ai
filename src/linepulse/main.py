@@ -14,6 +14,11 @@ from pydantic import BaseModel
 from sqlalchemy import text
 
 from linepulse.database.connection import engine
+from linepulse.database.analytics_repository import (
+    AnalyticsOverviewRecord,
+    LineRiskSummaryRecord,
+    PostgresAnalyticsRepository,
+)
 from linepulse.database.reference_repository import (
     FactoryRecord,
     PostgresReferenceDataRepository,
@@ -66,6 +71,27 @@ class ProductionLineResponse(BaseModel):
     dataset_provenance: str
 
 
+
+class AnalyticsOverviewResponse(BaseModel):
+    factory_count: int
+    production_line_count: int
+    risk_event_count: int
+    average_risk_score: float | None
+    maximum_risk_score: float | None
+    latest_snapshot_at: str | None
+
+
+class LineRiskSummaryResponse(BaseModel):
+    factory_id: str
+    line_id: str
+    line_name: str
+    specialization: str
+    active: bool
+    event_count: int
+    average_risk_score: float | None
+    maximum_risk_score: float | None
+    latest_snapshot_at: str | None
+
 def _risk_response(
     event: RiskEvent,
 ) -> RiskEventResponse:
@@ -115,10 +141,60 @@ def _production_line_response(
     )
 
 
+
+def _analytics_overview_response(
+    record: AnalyticsOverviewRecord,
+) -> AnalyticsOverviewResponse:
+    return AnalyticsOverviewResponse(
+        factory_count=record.factory_count,
+        production_line_count=(
+            record.production_line_count
+        ),
+        risk_event_count=(
+            record.risk_event_count
+        ),
+        average_risk_score=(
+            record.average_risk_score
+        ),
+        maximum_risk_score=(
+            record.maximum_risk_score
+        ),
+        latest_snapshot_at=(
+            record.latest_snapshot_at
+        ),
+    )
+
+
+def _line_risk_summary_response(
+    record: LineRiskSummaryRecord,
+) -> LineRiskSummaryResponse:
+    return LineRiskSummaryResponse(
+        factory_id=record.factory_id,
+        line_id=record.line_id,
+        line_name=record.line_name,
+        specialization=record.specialization,
+        active=record.active,
+        event_count=record.event_count,
+        average_risk_score=(
+            record.average_risk_score
+        ),
+        maximum_risk_score=(
+            record.maximum_risk_score
+        ),
+        latest_snapshot_at=(
+            record.latest_snapshot_at
+        ),
+    )
+
 def get_risk_event_repository(
 ) -> PostgresRiskEventRepository:
     return PostgresRiskEventRepository()
 
+
+
+def get_analytics_repository(
+) -> PostgresAnalyticsRepository:
+    return PostgresAnalyticsRepository()
 
 def get_reference_data_repository(
 ) -> PostgresReferenceDataRepository:
@@ -294,3 +370,41 @@ def get_production_line(
     return _production_line_response(
         record
     )
+
+
+@app.get(
+    "/api/analytics/overview",
+    response_model=AnalyticsOverviewResponse,
+)
+def get_analytics_overview(
+    repository: PostgresAnalyticsRepository = Depends(
+        get_analytics_repository
+    ),
+) -> AnalyticsOverviewResponse:
+    record = repository.get_overview()
+
+    return _analytics_overview_response(
+        record
+    )
+
+
+@app.get(
+    "/api/analytics/lines",
+    response_model=list[LineRiskSummaryResponse],
+)
+def list_line_risk_summaries(
+    factory_id: str | None = None,
+    repository: PostgresAnalyticsRepository = Depends(
+        get_analytics_repository
+    ),
+) -> list[LineRiskSummaryResponse]:
+    records = repository.list_line_summaries(
+        factory_id=factory_id
+    )
+
+    return [
+        _line_risk_summary_response(
+            record
+        )
+        for record in records
+    ]
