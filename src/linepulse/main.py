@@ -17,6 +17,8 @@ from linepulse.database.connection import engine
 from linepulse.database.analytics_repository import (
     AnalyticsOverviewRecord,
     LineRiskSummaryRecord,
+    RiskTrendPointRecord,
+    FactorSummaryRecord,
     PostgresAnalyticsRepository,
 )
 from linepulse.database.reference_repository import (
@@ -142,6 +144,24 @@ def _production_line_response(
 
 
 
+class RiskTrendPointResponse(BaseModel):
+    """Risk trend point returned by the analytics API."""
+
+    rule_version: str
+    snapshot_at: str
+    event_count: int
+    average_risk_score: float
+    maximum_risk_score: float
+
+
+class FactorSummaryResponse(BaseModel):
+    """Observed risk-factor frequency returned by the API."""
+
+    rule_version: str
+    factor: str
+    occurrence_count: int
+
+
 def _analytics_overview_response(
     record: AnalyticsOverviewRecord,
 ) -> AnalyticsOverviewResponse:
@@ -190,6 +210,28 @@ def get_risk_event_repository(
 ) -> PostgresRiskEventRepository:
     return PostgresRiskEventRepository()
 
+
+
+def _risk_trend_response(
+    record: RiskTrendPointRecord,
+) -> RiskTrendPointResponse:
+    return RiskTrendPointResponse(
+        rule_version=record.rule_version,
+        snapshot_at=record.snapshot_at,
+        event_count=record.event_count,
+        average_risk_score=record.average_risk_score,
+        maximum_risk_score=record.maximum_risk_score,
+    )
+
+
+def _factor_summary_response(
+    record: FactorSummaryRecord,
+) -> FactorSummaryResponse:
+    return FactorSummaryResponse(
+        rule_version=record.rule_version,
+        factor=record.factor,
+        occurrence_count=record.occurrence_count,
+    )
 
 
 def get_analytics_repository(
@@ -406,5 +448,57 @@ def list_line_risk_summaries(
         _line_risk_summary_response(
             record
         )
+        for record in records
+    ]
+
+
+@app.get(
+    "/api/analytics/risk-trend",
+    response_model=list[RiskTrendPointResponse],
+)
+def list_risk_trend(
+    factory_id: str | None = None,
+    line_id: str | None = None,
+    rule_version: str | None = None,
+    repository: PostgresAnalyticsRepository = Depends(
+        get_analytics_repository
+    ),
+) -> list[RiskTrendPointResponse]:
+    """Return persisted rule-risk trend data."""
+
+    records = repository.list_risk_trend(
+        factory_id=factory_id,
+        line_id=line_id,
+        rule_version=rule_version,
+    )
+
+    return [
+        _risk_trend_response(record)
+        for record in records
+    ]
+
+
+@app.get(
+    "/api/analytics/factors",
+    response_model=list[FactorSummaryResponse],
+)
+def list_factor_summaries(
+    factory_id: str | None = None,
+    line_id: str | None = None,
+    rule_version: str | None = None,
+    repository: PostgresAnalyticsRepository = Depends(
+        get_analytics_repository
+    ),
+) -> list[FactorSummaryResponse]:
+    """Return observed persisted risk-factor counts."""
+
+    records = repository.list_factor_summaries(
+        factory_id=factory_id,
+        line_id=line_id,
+        rule_version=rule_version,
+    )
+
+    return [
+        _factor_summary_response(record)
         for record in records
     ]
