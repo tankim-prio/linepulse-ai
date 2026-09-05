@@ -12,6 +12,9 @@ from linepulse.dashboard.api_client import (
 )
 
 
+RULE_VERSION = "progress-gap-v1"
+
+
 def _risk_value(
     value: float | None,
 ) -> str:
@@ -48,8 +51,14 @@ def main() -> None:
         )
 
         st.caption(
-            "The dashboard reads data through "
-            "FastAPI only."
+            "The dashboard reads operational "
+            "data through FastAPI only."
+        )
+
+        st.divider()
+
+        st.caption(
+            f"Rule version: {RULE_VERSION}"
         )
 
     client = LinePulseApiClient(
@@ -231,36 +240,212 @@ def main() -> None:
             "for this factory."
         )
 
-    st.subheader(
-        "Recent risk events"
-    )
-
     line_ids = [
         item["line_id"]
         for item in production_lines
     ]
 
-    line_filter_options = [
+    analytics_line_options = [
         "All active lines",
         *line_ids,
     ]
 
-    selected_line = st.selectbox(
-        "Production line",
-        options=line_filter_options,
+    selected_analytics_line = st.selectbox(
+        "Analytics production line",
+        options=analytics_line_options,
     )
 
-    line_id = (
+    analytics_line_id = (
         None
-        if selected_line == "All active lines"
-        else selected_line
+        if selected_analytics_line
+        == "All active lines"
+        else selected_analytics_line
+    )
+
+    try:
+        trend = client.risk_trend(
+            factory_id=selected_factory,
+            line_id=analytics_line_id,
+            rule_version=RULE_VERSION,
+        )
+
+        factors = client.factor_summaries(
+            factory_id=selected_factory,
+            line_id=analytics_line_id,
+            rule_version=RULE_VERSION,
+        )
+
+    except LinePulseApiError as exc:
+        st.error(
+            str(exc)
+        )
+        return
+
+    st.subheader(
+        "Rule-risk trend"
+    )
+
+    st.caption(
+        "Average and maximum persisted "
+        f"{RULE_VERSION} rule-risk scores "
+        "by snapshot."
+    )
+
+    if trend:
+        trend_frame = pd.DataFrame(
+            trend
+        )
+
+        trend_frame[
+            "snapshot_at"
+        ] = pd.to_datetime(
+            trend_frame[
+                "snapshot_at"
+            ]
+        )
+
+        trend_frame = (
+            trend_frame
+            .sort_values(
+                "snapshot_at"
+            )
+            .set_index(
+                "snapshot_at"
+            )
+        )
+
+        st.line_chart(
+            trend_frame[
+                [
+                    "average_risk_score",
+                    "maximum_risk_score",
+                ]
+            ]
+        )
+
+        trend_display = (
+            trend_frame
+            .reset_index()
+            [
+                [
+                    "snapshot_at",
+                    "event_count",
+                    "average_risk_score",
+                    "maximum_risk_score",
+                    "rule_version",
+                ]
+            ]
+        )
+
+        with st.expander(
+            "View risk-trend data"
+        ):
+            st.dataframe(
+                trend_display,
+                use_container_width=True,
+                hide_index=True,
+            )
+
+    else:
+        st.info(
+            "No trend data matched "
+            "the selected filters."
+        )
+
+    st.subheader(
+        "Observed risk factors"
+    )
+
+    st.caption(
+        "Counts show how often each factor "
+        "appears in persisted rule-risk events. "
+        "They are occurrence counts, not probabilities."
+    )
+
+    if factors:
+        factor_frame = pd.DataFrame(
+            factors
+        )
+
+        factor_frame = (
+            factor_frame
+            .sort_values(
+                [
+                    "occurrence_count",
+                    "factor",
+                ],
+                ascending=[
+                    False,
+                    True,
+                ],
+            )
+        )
+
+        factor_chart = (
+            factor_frame[
+                [
+                    "factor",
+                    "occurrence_count",
+                ]
+            ]
+            .set_index(
+                "factor"
+            )
+        )
+
+        st.bar_chart(
+            factor_chart
+        )
+
+        st.dataframe(
+            factor_frame[
+                [
+                    "factor",
+                    "occurrence_count",
+                    "rule_version",
+                ]
+            ],
+            use_container_width=True,
+            hide_index=True,
+        )
+
+        st.caption(
+            "Total observed factor occurrences: "
+            f"{int(factor_frame['occurrence_count'].sum())}"
+        )
+
+    else:
+        st.info(
+            "No observed factors matched "
+            "the selected filters."
+        )
+
+    st.subheader(
+        "Recent risk events"
+    )
+
+    event_line_options = [
+        "All active lines",
+        *line_ids,
+    ]
+
+    selected_event_line = st.selectbox(
+        "Recent-event production line",
+        options=event_line_options,
+    )
+
+    event_line_id = (
+        None
+        if selected_event_line
+        == "All active lines"
+        else selected_event_line
     )
 
     try:
         recent_events = client.risk_events(
             limit=10,
             factory_id=selected_factory,
-            line_id=line_id,
+            line_id=event_line_id,
         )
 
     except LinePulseApiError as exc:
@@ -300,7 +485,9 @@ def main() -> None:
     st.caption(
         "Decision-support demonstration only. "
         "Current persisted data and rule-risk "
-        "results are synthetic."
+        "results are synthetic. "
+        "No High/Medium/Low risk categories "
+        "are inferred by this dashboard."
     )
 
 

@@ -37,10 +37,7 @@ class LinePulseApiClient:
             or DEFAULT_API_URL
         )
 
-        self.base_url = (
-            resolved_url.rstrip("/")
-        )
-
+        self.base_url = resolved_url.rstrip("/")
         self.timeout = timeout
 
     def health(
@@ -106,6 +103,52 @@ class LinePulseApiClient:
 
         return self._get(
             "/api/analytics/lines",
+            params=params,
+        )
+
+    def risk_trend(
+        self,
+        *,
+        factory_id: str | None = None,
+        line_id: str | None = None,
+        rule_version: str | None = None,
+    ) -> list[dict[str, Any]]:
+        params: dict[str, str] = {}
+
+        if factory_id is not None:
+            params["factory_id"] = factory_id
+
+        if line_id is not None:
+            params["line_id"] = line_id
+
+        if rule_version is not None:
+            params["rule_version"] = rule_version
+
+        return self._get(
+            "/api/analytics/risk-trend",
+            params=params,
+        )
+
+    def factor_summaries(
+        self,
+        *,
+        factory_id: str | None = None,
+        line_id: str | None = None,
+        rule_version: str | None = None,
+    ) -> list[dict[str, Any]]:
+        params: dict[str, str] = {}
+
+        if factory_id is not None:
+            params["factory_id"] = factory_id
+
+        if line_id is not None:
+            params["line_id"] = line_id
+
+        if rule_version is not None:
+            params["rule_version"] = rule_version
+
+        return self._get(
+            "/api/analytics/factors",
             params=params,
         )
 

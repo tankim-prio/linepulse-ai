@@ -149,6 +149,96 @@ class DashboardApiClientTests(
             request.full_url,
         )
 
+    def test_risk_trend_filters_are_encoded(
+        self,
+    ):
+        client = LinePulseApiClient(
+            "http://example.test"
+        )
+
+        with patch(
+            "linepulse.dashboard.api_client.urlopen",
+            return_value=FakeResponse(
+                []
+            ),
+        ) as mocked:
+            client.risk_trend(
+                factory_id="FAC-001",
+                line_id="LINE-01",
+                rule_version="progress-gap-v1",
+            )
+
+        request = (
+            mocked.call_args.args[0]
+        )
+
+        self.assertTrue(
+            request.full_url.startswith(
+                "http://example.test"
+                "/api/analytics/risk-trend?"
+            )
+        )
+
+        self.assertIn(
+            "factory_id=FAC-001",
+            request.full_url,
+        )
+
+        self.assertIn(
+            "line_id=LINE-01",
+            request.full_url,
+        )
+
+        self.assertIn(
+            "rule_version=progress-gap-v1",
+            request.full_url,
+        )
+
+    def test_factor_summary_filters_are_encoded(
+        self,
+    ):
+        client = LinePulseApiClient(
+            "http://example.test"
+        )
+
+        with patch(
+            "linepulse.dashboard.api_client.urlopen",
+            return_value=FakeResponse(
+                []
+            ),
+        ) as mocked:
+            client.factor_summaries(
+                factory_id="FAC-001",
+                line_id="LINE-01",
+                rule_version="progress-gap-v1",
+            )
+
+        request = (
+            mocked.call_args.args[0]
+        )
+
+        self.assertTrue(
+            request.full_url.startswith(
+                "http://example.test"
+                "/api/analytics/factors?"
+            )
+        )
+
+        self.assertIn(
+            "factory_id=FAC-001",
+            request.full_url,
+        )
+
+        self.assertIn(
+            "line_id=LINE-01",
+            request.full_url,
+        )
+
+        self.assertIn(
+            "rule_version=progress-gap-v1",
+            request.full_url,
+        )
+
     def test_invalid_json_raises_api_error(
         self,
     ):
