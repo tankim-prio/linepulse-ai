@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from datetime import datetime
 
+from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import Session, sessionmaker
 
@@ -13,7 +14,7 @@ from linepulse.risk.events import RiskEvent
 
 
 def _parse_snapshot_at(value: str) -> datetime:
-    """Convert the RiskEvent ISO timestamp to an aware datetime."""
+    """Convert an ISO timestamp to an aware datetime."""
 
     parsed = datetime.fromisoformat(value)
 
@@ -25,8 +26,25 @@ def _parse_snapshot_at(value: str) -> datetime:
     return parsed
 
 
+def _to_risk_event(
+    model: RiskEventModel,
+) -> RiskEvent:
+    """Convert a database row to the domain RiskEvent."""
+
+    return RiskEvent(
+        event_id=model.event_id,
+        factory_id=model.factory_id,
+        line_id=model.line_id,
+        order_id=model.order_id,
+        snapshot_at=model.snapshot_at.isoformat(),
+        rule_version=model.rule_version,
+        risk_score=model.risk_score,
+        factors=tuple(model.factors),
+    )
+
+
 class PostgresRiskEventRepository:
-    """Idempotent PostgreSQL repository for RiskEvent objects."""
+    """PostgreSQL repository for LinePulse RiskEvent objects."""
 
     def __init__(
         self,
@@ -34,13 +52,11 @@ class PostgresRiskEventRepository:
     ) -> None:
         self.session_factory = session_factory
 
-    def append(self, event: RiskEvent) -> bool:
-        """
-        Insert a risk event once.
-
-        Returns True when a new row is created.
-        Returns False when event_id already exists.
-        """
+    def append(
+        self,
+        event: RiskEvent,
+    ) -> bool:
+        """Insert once; return False when event_id already exists."""
 
         statement = (
             insert(RiskEventModel)
@@ -68,3 +84,68 @@ class PostgresRiskEventRepository:
             session.commit()
 
             return result.rowcount == 1
+
+    def get_by_event_id(
+        self,
+        event_id: str,
+    ) -> RiskEvent | None:
+        """Return one event by stable event ID."""
+
+        statement = select(
+            RiskEventModel
+        ).where(
+            RiskEventModel.event_id == event_id
+        )
+
+        with self.session_factory() as session:
+            model = session.scalar(statement)
+
+            if model is None:
+                return None
+
+            return _to_risk_event(model)
+
+    def list_recent(
+        self,
+        *,
+        limit: int = 100,
+        factory_id: str | None = None,
+        line_id: str | None = None,
+    ) -> list[RiskEvent]:
+        """Return recent risk events with optional filters."""
+
+        if limit < 1 or limit > 500:
+            raise ValueError(
+                "limit must be between 1 and 500."
+            )
+
+        statement = select(
+            RiskEventModel
+        )
+
+        if factory_id is not None:
+            statement = statement.where(
+                RiskEventModel.factory_id
+                == factory_id
+            )
+
+        if line_id is not None:
+            statement = statement.where(
+                RiskEventModel.line_id
+                == line_id
+            )
+
+        statement = statement.order_by(
+            RiskEventModel.snapshot_at.desc(),
+            RiskEventModel.id.desc(),
+        ).limit(limit)
+
+        with self.session_factory() as session:
+            models = session.scalars(
+                statement
+            ).all()
+
+            return [
+                _to_risk_event(model)
+                for model in models
+            ]
