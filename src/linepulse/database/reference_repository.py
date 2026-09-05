@@ -6,6 +6,7 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Any
 
+from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import Session, sessionmaker
 
@@ -24,8 +25,64 @@ class ReferenceDataSyncResult:
     production_lines_processed: int
 
 
+@dataclass(frozen=True)
+class FactoryRecord:
+    """Read-safe factory reference record."""
+
+    factory_id: str
+    factory_name: str
+    country: str
+    timezone: str
+    weekly_closure_day: str
+    dataset_provenance: str
+
+
+@dataclass(frozen=True)
+class ProductionLineRecord:
+    """Read-safe production-line reference record."""
+
+    line_id: str
+    factory_id: str
+    line_name: str
+    specialization: str
+    standard_operator_capacity: int
+    planning_efficiency: float
+    active: bool
+    dataset_provenance: str
+
+
+def _to_factory_record(
+    model: Factory,
+) -> FactoryRecord:
+    return FactoryRecord(
+        factory_id=model.factory_id,
+        factory_name=model.factory_name,
+        country=model.country,
+        timezone=model.timezone,
+        weekly_closure_day=model.weekly_closure_day,
+        dataset_provenance=model.dataset_provenance,
+    )
+
+
+def _to_production_line_record(
+    model: ProductionLine,
+) -> ProductionLineRecord:
+    return ProductionLineRecord(
+        line_id=model.line_id,
+        factory_id=model.factory_id,
+        line_name=model.line_name,
+        specialization=model.specialization,
+        standard_operator_capacity=(
+            model.standard_operator_capacity
+        ),
+        planning_efficiency=model.planning_efficiency,
+        active=model.active,
+        dataset_provenance=model.dataset_provenance,
+    )
+
+
 class PostgresReferenceDataRepository:
-    """Synchronize factory and production-line reference data."""
+    """Synchronize and read factory/production-line reference data."""
 
     def __init__(
         self,
@@ -132,3 +189,117 @@ class PostgresReferenceDataRepository:
                 line_rows
             ),
         )
+
+    def list_factories(
+        self,
+    ) -> list[FactoryRecord]:
+        """Return factories ordered by factory ID."""
+
+        statement = (
+            select(Factory)
+            .order_by(
+                Factory.factory_id
+            )
+        )
+
+        with self.session_factory() as session:
+            models = session.scalars(
+                statement
+            ).all()
+
+            return [
+                _to_factory_record(model)
+                for model in models
+            ]
+
+    def get_factory(
+        self,
+        factory_id: str,
+    ) -> FactoryRecord | None:
+        """Return one factory by natural ID."""
+
+        statement = (
+            select(Factory)
+            .where(
+                Factory.factory_id
+                == factory_id
+            )
+        )
+
+        with self.session_factory() as session:
+            model = session.scalar(
+                statement
+            )
+
+            if model is None:
+                return None
+
+            return _to_factory_record(
+                model
+            )
+
+    def list_production_lines(
+        self,
+        *,
+        factory_id: str | None = None,
+        active: bool | None = None,
+    ) -> list[ProductionLineRecord]:
+        """Return production lines with optional filters."""
+
+        statement = select(
+            ProductionLine
+        )
+
+        if factory_id is not None:
+            statement = statement.where(
+                ProductionLine.factory_id
+                == factory_id
+            )
+
+        if active is not None:
+            statement = statement.where(
+                ProductionLine.active
+                == active
+            )
+
+        statement = statement.order_by(
+            ProductionLine.line_id
+        )
+
+        with self.session_factory() as session:
+            models = session.scalars(
+                statement
+            ).all()
+
+            return [
+                _to_production_line_record(
+                    model
+                )
+                for model in models
+            ]
+
+    def get_production_line(
+        self,
+        line_id: str,
+    ) -> ProductionLineRecord | None:
+        """Return one production line by natural ID."""
+
+        statement = (
+            select(ProductionLine)
+            .where(
+                ProductionLine.line_id
+                == line_id
+            )
+        )
+
+        with self.session_factory() as session:
+            model = session.scalar(
+                statement
+            )
+
+            if model is None:
+                return None
+
+            return _to_production_line_record(
+                model
+            )

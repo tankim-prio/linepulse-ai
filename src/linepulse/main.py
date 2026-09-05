@@ -14,6 +14,11 @@ from pydantic import BaseModel
 from sqlalchemy import text
 
 from linepulse.database.connection import engine
+from linepulse.database.reference_repository import (
+    FactoryRecord,
+    PostgresReferenceDataRepository,
+    ProductionLineRecord,
+)
 from linepulse.database.risk_repository import (
     PostgresRiskEventRepository,
 )
@@ -41,7 +46,27 @@ class RiskEventResponse(BaseModel):
     factors: list[str]
 
 
-def _response_from_event(
+class FactoryResponse(BaseModel):
+    factory_id: str
+    factory_name: str
+    country: str
+    timezone: str
+    weekly_closure_day: str
+    dataset_provenance: str
+
+
+class ProductionLineResponse(BaseModel):
+    line_id: str
+    factory_id: str
+    line_name: str
+    specialization: str
+    standard_operator_capacity: int
+    planning_efficiency: float
+    active: bool
+    dataset_provenance: str
+
+
+def _risk_response(
     event: RiskEvent,
 ) -> RiskEventResponse:
     return RiskEventResponse(
@@ -56,11 +81,48 @@ def _response_from_event(
     )
 
 
+def _factory_response(
+    record: FactoryRecord,
+) -> FactoryResponse:
+    return FactoryResponse(
+        factory_id=record.factory_id,
+        factory_name=record.factory_name,
+        country=record.country,
+        timezone=record.timezone,
+        weekly_closure_day=record.weekly_closure_day,
+        dataset_provenance=record.dataset_provenance,
+    )
+
+
+def _production_line_response(
+    record: ProductionLineRecord,
+) -> ProductionLineResponse:
+    return ProductionLineResponse(
+        line_id=record.line_id,
+        factory_id=record.factory_id,
+        line_name=record.line_name,
+        specialization=record.specialization,
+        standard_operator_capacity=(
+            record.standard_operator_capacity
+        ),
+        planning_efficiency=(
+            record.planning_efficiency
+        ),
+        active=record.active,
+        dataset_provenance=(
+            record.dataset_provenance
+        ),
+    )
+
+
 def get_risk_event_repository(
 ) -> PostgresRiskEventRepository:
-    """Create the API repository dependency."""
-
     return PostgresRiskEventRepository()
+
+
+def get_reference_data_repository(
+) -> PostgresReferenceDataRepository:
+    return PostgresReferenceDataRepository()
 
 
 @app.get("/")
@@ -106,8 +168,6 @@ def list_risk_events(
         get_risk_event_repository
     ),
 ) -> list[RiskEventResponse]:
-    """Return recent persisted risk events."""
-
     events = repository.list_recent(
         limit=limit,
         factory_id=factory_id,
@@ -115,7 +175,7 @@ def list_risk_events(
     )
 
     return [
-        _response_from_event(event)
+        _risk_response(event)
         for event in events
     ]
 
@@ -130,8 +190,6 @@ def get_risk_event(
         get_risk_event_repository
     ),
 ) -> RiskEventResponse:
-    """Return one persisted risk event."""
-
     event = repository.get_by_event_id(
         event_id
     )
@@ -142,4 +200,97 @@ def get_risk_event(
             detail="Risk event not found.",
         )
 
-    return _response_from_event(event)
+    return _risk_response(
+        event
+    )
+
+
+@app.get(
+    "/api/factories",
+    response_model=list[FactoryResponse],
+)
+def list_factories(
+    repository: PostgresReferenceDataRepository = Depends(
+        get_reference_data_repository
+    ),
+) -> list[FactoryResponse]:
+    records = repository.list_factories()
+
+    return [
+        _factory_response(record)
+        for record in records
+    ]
+
+
+@app.get(
+    "/api/factories/{factory_id}",
+    response_model=FactoryResponse,
+)
+def get_factory(
+    factory_id: str,
+    repository: PostgresReferenceDataRepository = Depends(
+        get_reference_data_repository
+    ),
+) -> FactoryResponse:
+    record = repository.get_factory(
+        factory_id
+    )
+
+    if record is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Factory not found.",
+        )
+
+    return _factory_response(
+        record
+    )
+
+
+@app.get(
+    "/api/production-lines",
+    response_model=list[ProductionLineResponse],
+)
+def list_production_lines(
+    factory_id: str | None = None,
+    active: bool | None = None,
+    repository: PostgresReferenceDataRepository = Depends(
+        get_reference_data_repository
+    ),
+) -> list[ProductionLineResponse]:
+    records = repository.list_production_lines(
+        factory_id=factory_id,
+        active=active,
+    )
+
+    return [
+        _production_line_response(
+            record
+        )
+        for record in records
+    ]
+
+
+@app.get(
+    "/api/production-lines/{line_id}",
+    response_model=ProductionLineResponse,
+)
+def get_production_line(
+    line_id: str,
+    repository: PostgresReferenceDataRepository = Depends(
+        get_reference_data_repository
+    ),
+) -> ProductionLineResponse:
+    record = repository.get_production_line(
+        line_id
+    )
+
+    if record is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Production line not found.",
+        )
+
+    return _production_line_response(
+        record
+    )
