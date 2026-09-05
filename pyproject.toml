@@ -13,6 +13,16 @@ dependencies = [
   "matplotlib==3.10.8",
   "pandas==2.2.3",
   "scikit-learn==1.8.0",
+  "SQLAlchemy==2.0.52",
+  "alembic==1.19.2",
+  "psycopg2-binary==2.9.12",
+  "fastapi==0.141.1",
+  "uvicorn==0.52.4",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest==9.1.1",
 ]
 
 [project.scripts]
