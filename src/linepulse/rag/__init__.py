@@ -70,3 +70,20 @@ __all__ = [
     "load_sections",
     "validate_knowledge_integrity",
 ]
+
+from linepulse.rag.answerability import (
+    ANSWERABILITY_POLICY_ID,
+    ANSWERABILITY_THRESHOLD,
+    AnswerabilityDecision,
+    AnswerabilityError,
+    AnswerabilityGate,
+)
+
+__all__ = [
+    *__all__,
+    "ANSWERABILITY_POLICY_ID",
+    "ANSWERABILITY_THRESHOLD",
+    "AnswerabilityDecision",
+    "AnswerabilityError",
+    "AnswerabilityGate",
+]
