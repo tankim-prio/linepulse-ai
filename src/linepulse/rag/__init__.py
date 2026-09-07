@@ -72,6 +72,7 @@ __all__ = [
 ]
 
 from linepulse.rag.answerability import (
+    ANSWERABILITY_POLICY_FINGERPRINT,
     ANSWERABILITY_POLICY_ID,
     ANSWERABILITY_THRESHOLD,
     AnswerabilityDecision,
@@ -81,6 +82,7 @@ from linepulse.rag.answerability import (
 
 __all__ = [
     *__all__,
+    "ANSWERABILITY_POLICY_FINGERPRINT",
     "ANSWERABILITY_POLICY_ID",
     "ANSWERABILITY_THRESHOLD",
     "AnswerabilityDecision",
