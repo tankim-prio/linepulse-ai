@@ -18,6 +18,12 @@ from linepulse.rag.documents import (
     KnowledgeSection,
     RagDataError,
 )
+from linepulse.rag.retrieval import (
+    DEFAULT_TOP_K,
+    InMemoryRetriever,
+    RetrievalError,
+    RetrievalResult,
+)
 from linepulse.rag.loader import (
     DEFAULT_DATA_DIR,
     KnowledgeCorpus,
@@ -30,6 +36,10 @@ from linepulse.rag.loader import (
 
 
 __all__ = [
+    "RetrievalResult",
+    "RetrievalError",
+    "InMemoryRetriever",
+    "DEFAULT_TOP_K",
     "MultilingualE5Embedder",
     "EmbeddingError",
     "EmbeddingBatch",
