@@ -100,3 +100,20 @@ from .hybrid import (
     LexicalRetrievalResult,
     LexicalRetriever,
 )
+
+from .answerability_v2 import (
+    AnswerabilityDecisionV2,
+    DenseTop1AnswerabilityPolicyV2,
+    INSUFFICIENT_EVIDENCE_STATUS,
+    RAG_V2_AUDIT_SHA256,
+    RAG_V2_CORPUS_FINGERPRINT,
+    RAG_V2_DENSE_TOP1_THRESHOLD,
+    RAG_V2_DEVELOPMENT_SHA256,
+    RAG_V2_EMBEDDING_DIMENSION,
+    RAG_V2_EMBEDDING_MODEL,
+    RAG_V2_EMBEDDING_MODEL_REVISION,
+    RAG_V2_POLICY_FINGERPRINT,
+    RAG_V2_POLICY_ID,
+    RAG_V2_POLICY_SCHEMA_VERSION,
+    SUPPORTED_STATUS,
+)

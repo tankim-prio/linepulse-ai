@@ -1,0 +1,41 @@
+{
+  "audit_dataset_sha256": "2e9ccd4c20e023a5a52081eb3a8e84f1a8eb0a3a6b0921447c3adb4eab3495c9",
+  "audit_evaluated": false,
+  "audit_rows": 48,
+  "audit_used_for_selection": false,
+  "corpus_fingerprint": "59f725c9b3b67abce85fb38b4860c1dbe7c5d9f5f4094a8b5ae60e26f31fa1a4",
+  "development_dataset_sha256": "68b973e4b04fb001379fc265de0d40cd0ff4bf6b5e5e3c085d0cf0a6b15c6b8a",
+  "development_fit_metrics": {
+    "accuracy": 0.8854166666666666,
+    "balanced_accuracy": 0.875,
+    "f1": 0.9133858267716536,
+    "fn": 6,
+    "fp": 5,
+    "mcc": 0.7443873683187766,
+    "precision": 0.9206349206349206,
+    "recall": 0.90625,
+    "specificity": 0.84375,
+    "tn": 27,
+    "tp": 58
+  },
+  "development_insufficient_evidence": 32,
+  "development_rows": 96,
+  "development_supported": 64,
+  "embedding_dimension": 384,
+  "embedding_model": "intfloat/multilingual-e5-small",
+  "embedding_model_revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+  "feature": "dense_top1_cosine_similarity",
+  "operator": ">=",
+  "policy_fingerprint": "59e9ab2bdf28abf157b3981a768ce2a646724dca294aff7525e1131d8e8f189f",
+  "policy_id": "dense-top1-development-fit-v2",
+  "policy_schema_version": "rag-answerability-v2-policy-v1",
+  "selection_basis": "Development-only Steps 11A-11C. Dense top1 threshold selected over LR2 because the additional classifier complexity was not justified by robust development evidence and Bangla performance was weaker for LR2.",
+  "threshold": 0.8415164947509766,
+  "threshold_fit_objective": [
+    "mcc",
+    "balanced_accuracy",
+    "specificity",
+    "f1",
+    "higher_threshold"
+  ]
+}
