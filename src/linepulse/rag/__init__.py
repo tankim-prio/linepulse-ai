@@ -24,6 +24,12 @@ from linepulse.rag.retrieval import (
     RetrievalError,
     RetrievalResult,
 )
+from linepulse.rag.evidence import (
+    EvidenceBundle,
+    EvidenceError,
+    EvidenceRecord,
+    EvidenceService,
+)
 from linepulse.rag.loader import (
     DEFAULT_DATA_DIR,
     KnowledgeCorpus,
@@ -36,6 +42,10 @@ from linepulse.rag.loader import (
 
 
 __all__ = [
+    "EvidenceService",
+    "EvidenceRecord",
+    "EvidenceError",
+    "EvidenceBundle",
     "RetrievalResult",
     "RetrievalError",
     "InMemoryRetriever",
