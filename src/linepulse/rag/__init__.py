@@ -89,3 +89,14 @@ __all__ = [
     "AnswerabilityError",
     "AnswerabilityGate",
 ]
+
+from .hybrid import (
+    DEFAULT_RRF_K,
+    LEXICAL_ANALYZER,
+    LEXICAL_NGRAM_RANGE,
+    HybridRetrievalError,
+    HybridRetrievalResult,
+    HybridRetriever,
+    LexicalRetrievalResult,
+    LexicalRetriever,
+)
