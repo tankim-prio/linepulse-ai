@@ -1,4 +1,4 @@
-﻿dataset_name,relative_path,row_count,column_count,primary_key,foreign_keys,purpose,dataset_provenance
+dataset_name,relative_path,row_count,column_count,primary_key,foreign_keys,purpose,dataset_provenance
 factories,relational/factories.csv,1,6,factory_id,,Factory master data and timezone boundary.,synthetic
 production_lines,relational/production_lines.csv,8,8,line_id,factory_id -> factories.factory_id,Production line capacity and specialization.,synthetic
 styles,relational/styles.csv,36,9,style_id,factory_id -> factories.factory_id,"Style complexity, product type, SAM, and baseline quality attributes.",synthetic
@@ -20,3 +20,4 @@ document_sections,knowledge/document_sections.csv,16,6,section_id,document_id ->
 rag_gold_questions,evaluation/rag_gold_questions.csv,60,10,query_id,,Human-style retrieval and grounded-answer evaluation cases.,synthetic
 agent_eval_cases,evaluation/agent_eval_cases.csv,48,12,case_id,snapshot_id -> daily_line_ml.snapshot_id,Expected LangGraph state and tool outcomes.,synthetic
 security_eval_cases,evaluation/security_eval_cases.csv,40,9,security_case_id,,"Prompt-injection, authorization, replay, and tool-abuse tests.",synthetic
+rag_answerability_calibration,evaluation/rag_answerability_calibration.csv,46,15,query_id,,Answerability threshold calibration cases using validation-supported positives and new synthetic corpus-boundary negatives; reserved test cases are excluded from tuning.,synthetic

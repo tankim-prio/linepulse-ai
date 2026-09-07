@@ -77,6 +77,10 @@ FOREIGN_KEYS: dict[str, tuple[tuple[tuple[str, ...], str, tuple[str, ...]], ...]
         (("relevant_document_id",), "documents", ("document_id",)),
         (("relevant_section_id",), "document_sections", ("section_id",)),
     ),
+    "rag_answerability_calibration": (
+        (("relevant_document_id",), "documents", ("document_id",)),
+        (("relevant_section_id",), "document_sections", ("section_id",)),
+    ),
     "agent_eval_cases": (
         (("snapshot_id",), "daily_line_ml", ("snapshot_id",)),
     ),
@@ -134,4 +138,3 @@ FORBIDDEN_ORDER_DELAY_FEATURES = {
 
 ALLOWED_SPLITS = {"train", "validation", "test"}
 REQUIRED_NOTE_LANGUAGES = {"bn", "en", "mixed"}
-

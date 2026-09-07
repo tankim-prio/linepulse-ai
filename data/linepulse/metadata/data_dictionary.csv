@@ -1,4 +1,4 @@
-﻿dataset_name,column_name,data_type,required,description,example_values,leakage_note,dataset_provenance
+dataset_name,column_name,data_type,required,description,example_values,leakage_note,dataset_provenance
 factories,factory_id,object,True,Synthetic factory identifier.,FAC-001,,synthetic
 factories,factory_name,object,True,Factory name.,Demo Apparel Works,,synthetic
 factories,country,object,True,Country.,Bangladesh,,synthetic
@@ -258,3 +258,18 @@ security_eval_cases,expected_decision,object,True,Expected security-policy resul
 security_eval_cases,expected_write_count,int64,True,Expected write count.,0 | 0 | 0,,synthetic
 security_eval_cases,data_split,object,True,"Time-based train, validation, or test partition.",test | test | test,,synthetic
 security_eval_cases,dataset_provenance,object,True,Always synthetic for this package.,synthetic | synthetic | synthetic,,synthetic
+rag_answerability_calibration,query_id,object,True,Unique calibration query id.,CAL-P-001 | CAL-N-001,,synthetic
+rag_answerability_calibration,source_query_id,object,False,Source validation query id for supported calibration positives; blank for newly constructed negatives.,RAG-001 | ,Calibration provenance only; never use as retrieval or answerability model input.,synthetic
+rag_answerability_calibration,language,object,True,Question language.,en | bn | mixed,,synthetic
+rag_answerability_calibration,question,object,True,Human-style calibration question.,What is the factory's overtime wage rate per hour?,,synthetic
+rag_answerability_calibration,relevant_document_id,object,False,Relevant document id for supported questions; blank when evidence is intentionally insufficient.,DOC-001 | ,Evaluation label metadata only; never expose to retrieval before ranking.,synthetic
+rag_answerability_calibration,relevant_section_id,object,False,Relevant section id for supported questions; blank when evidence is intentionally insufficient.,DOC-001-S01 | ,Evaluation label metadata only; never expose to retrieval before ranking.,synthetic
+rag_answerability_calibration,expected_key_points,object,False,Reference facts for supported calibration cases; blank for insufficient-evidence negatives.,Reference facts from the relevant knowledge section.,Ground-truth evaluation metadata; never provide to retrieval or answer generation as input.,synthetic
+rag_answerability_calibration,answerable,bool,True,Whether the synthetic knowledge corpus supports an answer.,True | False,Calibration target label; never use as an input feature.,synthetic
+rag_answerability_calibration,expected_status,object,True,Expected answerability outcome.,supported | insufficient_evidence,Calibration target label; never use as an input feature.,synthetic
+rag_answerability_calibration,data_split,object,True,Dataset partition reserved for answerability calibration.,calibration,Split metadata only; must not be used as an answerability feature.,synthetic
+rag_answerability_calibration,calibration_source,object,True,Origin of the calibration case.,validation_supported | new_boundary_negative,Calibration construction metadata; never use as an answerability input.,synthetic
+rag_answerability_calibration,negative_type,object,False,Boundary-negative category for insufficient-evidence cases; blank for supported positives.,out_of_scope_policy | near_scope_boundary | unsupported_specificity | external_live_state,Negative-class annotation only; never use as an answerability input.,synthetic
+rag_answerability_calibration,boundary_category,object,False,Domain boundary represented by a new insufficient-evidence case.,payroll_policy | supplier_payment,Calibration annotation only; never use as an answerability input.,synthetic
+rag_answerability_calibration,boundary_reason,object,False,Human-readable reason why the current knowledge corpus cannot support the negative case.,The current corpus contains no supplier payment policy.,Ground-truth calibration rationale; never provide to retrieval or answer generation.,synthetic
+rag_answerability_calibration,dataset_provenance,object,True,Always synthetic for this calibration package.,synthetic,,synthetic

@@ -24,8 +24,8 @@ class DataValidatorTests(unittest.TestCase):
             if not check.passed and check.severity == "error"
         ]
         self.assertTrue(report.passed, "\n".join(failures))
-        self.assertEqual(report.dataset_count, 21)
-        self.assertEqual(report.row_count, 25_277)
+        self.assertEqual(report.dataset_count, 22)
+        self.assertEqual(report.row_count, 25_323)
 
     def test_missing_declared_file_is_reported(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -63,4 +63,3 @@ class DataValidatorTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
