@@ -5,6 +5,14 @@ from linepulse.rag.chunks import (
     RetrievalChunk,
     build_retrieval_chunk,
 )
+from linepulse.rag.embeddings import (
+    EMBEDDING_DIMENSION,
+    EMBEDDING_MODEL_NAME,
+    EMBEDDING_MODEL_REVISION,
+    EmbeddingBatch,
+    EmbeddingError,
+    MultilingualE5Embedder,
+)
 from linepulse.rag.documents import (
     KnowledgeDocument,
     KnowledgeSection,
@@ -22,6 +30,12 @@ from linepulse.rag.loader import (
 
 
 __all__ = [
+    "MultilingualE5Embedder",
+    "EmbeddingError",
+    "EmbeddingBatch",
+    "EMBEDDING_MODEL_REVISION",
+    "EMBEDDING_MODEL_NAME",
+    "EMBEDDING_DIMENSION",
     "CHUNK_SCHEMA_VERSION",
     "DEFAULT_DATA_DIR",
     "KnowledgeCorpus",
